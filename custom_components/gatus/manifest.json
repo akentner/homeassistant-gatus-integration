@@ -1,0 +1,12 @@
+{
+  "domain": "gatus",
+  "name": "Gatus",
+  "codeowners": ["@akentner"],
+  "config_flow": true,
+  "documentation": "https://github.com/akentner/homeassistant-gatus-integration",
+  "issue_tracker": "https://github.com/akentner/homeassistant-gatus-integration/issues",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "version": "0.1.0",
+  "requirements": []
+}
