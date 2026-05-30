@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 1 context gathered
-last_updated: "2026-05-30T22:44:55.904Z"
-last_activity: 2026-05-30 -- Phase 01 planning complete
+last_updated: "2026-05-30T22:53:30.663Z"
+last_activity: 2026-05-30
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 3
-  completed_plans: 0
+  completed_plans: 1
   percent: 0
 ---
 
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-30)
 
 **Core value:** One Gatus instance → full HA entity set per endpoint, queryable in automations and dashboards without any intermediate plumbing
-**Current focus:** Phase 1 — Core Scaffold
+**Current focus:** Phase 01 — core-scaffold
 
 ## Current Position
 
-Phase: 1 of 4 (Core Scaffold)
-Plan: 0 of ? in current phase
+Phase: 01 (core-scaffold) — EXECUTING
+Plan: 2 of 3
 Status: Ready to execute
-Last activity: 2026-05-30 -- Phase 01 planning complete
+Last activity: 2026-05-30
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [███░░░░░░░] 33%
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 01-core-scaffold P01 | 10 minutes | - tasks | - files |
 
 ## Accumulated Context
 
@@ -64,6 +65,8 @@ Recent decisions affecting current work:
 - [Init]: Duration unit is milliseconds — Gatus returns nanoseconds, divide by 1_000_000
 - [Init]: Entity removal via active reconciliation (`entity_registry.async_remove`)
 - [Init]: Use `async_get_clientsession(hass)` — never create own aiohttp session
+- [Phase ?]: manifest.json documentation and issue_tracker added beyond D-09 spec (Pitfall 1 resolved)
+- [Phase ?]: GatusConfigEntry uses ConfigEntry[Any] in Phase 1 stub; narrowed to GatusDataUpdateCoordinator in Plan 03
 
 ### Pending Todos
 
@@ -83,6 +86,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-30T22:02:23.899Z
+Last session: 2026-05-30T22:53:24.785Z
 Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-core-scaffold/01-CONTEXT.md
+Resume file: None

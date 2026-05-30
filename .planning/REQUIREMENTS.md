@@ -16,7 +16,7 @@
 - [ ] **POLL-01**: Integration polls `GET /api/v1/endpoints/statuses` via shared aiohttp session
 - [ ] **POLL-02**: API key sent as `Authorization: Bearer <token>` when provided
 - [ ] **POLL-03**: Coordinator raises `ConfigEntryNotReady` if first refresh fails
-- [ ] **POLL-04**: Default scan interval is 60 s
+- [x] **POLL-04**: Default scan interval is 60 s
 
 ### Entities — Binary Sensor
 
@@ -71,7 +71,7 @@
 | POLL-01 | Phase 1 (Core Scaffold) | Pending |
 | POLL-02 | Phase 1 (Core Scaffold) | Pending |
 | POLL-03 | Phase 1 (Core Scaffold) | Pending |
-| POLL-04 | Phase 1 (Core Scaffold) | Pending |
+| POLL-04 | Phase 1 (Core Scaffold) | Complete |
 | SETUP-01 | Phase 2 (Config Flow) | Pending |
 | SETUP-02 | Phase 2 (Config Flow) | Pending |
 | SETUP-03 | Phase 2 (Config Flow) | Pending |
