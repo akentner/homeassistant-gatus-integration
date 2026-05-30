@@ -173,16 +173,18 @@ async def test_scheduled_refetch_after_60_seconds(hass, aioclient_mock):
     """Test 8 (Pitfall 6 / success criterion 4): Scheduled re-fetch after 60 s.
 
     coordinator.async_add_listener() is required to arm the HA polling scheduler.
+    The cancel function returned by async_add_listener() must be called in cleanup
+    to prevent a lingering timer from causing teardown failures.
     """
-    aioclient_mock.get(STATUSES_URL, json=[ENDPOINT_A])
     aioclient_mock.get(STATUSES_URL, json=[ENDPOINT_A])
 
     coordinator = GatusDataUpdateCoordinator(
         hass, url=GATUS_URL, api_key=None, scan_interval=60
     )
     # Arm the scheduler — without a listener HA does not schedule polling
-    coordinator.async_add_listener(lambda: None)
-    await coordinator.async_refresh()  # consumes response 1
+    # Save the unsubscribe function so we can cancel the timer after the test
+    cancel = coordinator.async_add_listener(lambda: None)
+    await coordinator.async_refresh()  # first fetch
 
     assert aioclient_mock.call_count == 1
 
@@ -192,16 +194,43 @@ async def test_scheduled_refetch_after_60_seconds(hass, aioclient_mock):
     assert aioclient_mock.call_count == 2
     assert coordinator.data is not None
 
+    # Cancel the listener to stop the polling timer and prevent lingering timers
+    cancel()
+
 
 async def test_disappearing_endpoint_absent_from_data(hass, aioclient_mock):
     """Test 9 (D-02): Endpoint disappears from API — key removed from coordinator.data.
 
     After second refresh with svc-b absent, coordinator.data must NOT contain 'core_svc-b'.
+
+    AiohttpClientMocker does not consume mocks on match (always returns the first registered
+    response for a URL). Use a side_effect counter to return different responses per call.
     """
-    # First refresh: both endpoints present
-    aioclient_mock.get(STATUSES_URL, json=[ENDPOINT_SVC_A, ENDPOINT_SVC_B])
-    # Second refresh: only svc-a
-    aioclient_mock.get(STATUSES_URL, json=[ENDPOINT_SVC_A])
+    import json as _json
+
+    from pytest_homeassistant_custom_component.test_util.aiohttp import (
+        AiohttpClientMockResponse,
+    )
+    from yarl import URL
+
+    call_count = 0
+    responses = [
+        [ENDPOINT_SVC_A, ENDPOINT_SVC_B],  # first refresh: both endpoints
+        [ENDPOINT_SVC_A],  # second refresh: only svc-a
+    ]
+
+    async def side_effect(method, url, data):  # type: ignore[no-untyped-def]
+        nonlocal call_count
+        body = responses[min(call_count, len(responses) - 1)]
+        call_count += 1
+        return AiohttpClientMockResponse(
+            method=method,
+            url=URL(STATUSES_URL),
+            status=200,
+            text=_json.dumps(body),
+        )
+
+    aioclient_mock.get(STATUSES_URL, side_effect=side_effect)
 
     coordinator = GatusDataUpdateCoordinator(
         hass, url=GATUS_URL, api_key=None, scan_interval=60
