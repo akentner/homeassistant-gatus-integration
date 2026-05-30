@@ -66,13 +66,32 @@
 
 ## Traceability
 
-| REQ-ID | Phase |
-|--------|-------|
-| SETUP-01 — SETUP-06 | Phase 2 (Config Flow) |
-| POLL-01 — POLL-04 | Phase 1 (Core Scaffold) |
-| SENS-01 — SENS-08 | Phase 3 (Entity Platforms) |
-| DEVICE-01 — DEVICE-04 | Phase 3 (Entity Platforms) |
-| DIST-01 — DIST-02 | Phase 4 (HACS + CI) |
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| POLL-01 | Phase 1 (Core Scaffold) | Pending |
+| POLL-02 | Phase 1 (Core Scaffold) | Pending |
+| POLL-03 | Phase 1 (Core Scaffold) | Pending |
+| POLL-04 | Phase 1 (Core Scaffold) | Pending |
+| SETUP-01 | Phase 2 (Config Flow) | Pending |
+| SETUP-02 | Phase 2 (Config Flow) | Pending |
+| SETUP-03 | Phase 2 (Config Flow) | Pending |
+| SETUP-04 | Phase 2 (Config Flow) | Pending |
+| SETUP-05 | Phase 2 (Config Flow) | Pending |
+| SETUP-06 | Phase 2 (Config Flow) | Pending |
+| SENS-01 | Phase 3 (Entity Platforms) | Pending |
+| SENS-02 | Phase 3 (Entity Platforms) | Pending |
+| SENS-03 | Phase 3 (Entity Platforms) | Pending |
+| SENS-04 | Phase 3 (Entity Platforms) | Pending |
+| SENS-05 | Phase 3 (Entity Platforms) | Pending |
+| SENS-06 | Phase 3 (Entity Platforms) | Pending |
+| SENS-07 | Phase 3 (Entity Platforms) | Pending |
+| SENS-08 | Phase 3 (Entity Platforms) | Pending |
+| DEVICE-01 | Phase 3 (Entity Platforms) | Pending |
+| DEVICE-02 | Phase 3 (Entity Platforms) | Pending |
+| DEVICE-03 | Phase 3 (Entity Platforms) | Pending |
+| DEVICE-04 | Phase 3 (Entity Platforms) | Pending |
+| DIST-01 | Phase 4 (Distribution) | Pending |
+| DIST-02 | Phase 4 (Distribution) | Pending |
 
 ---
 
