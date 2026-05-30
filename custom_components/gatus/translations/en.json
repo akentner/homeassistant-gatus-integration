@@ -13,6 +13,26 @@
           "prefix": "Prefix for entity object IDs (default: gatus_)"
         },
         "description": "Connect to your Gatus monitoring instance"
+      },
+      "reauth_confirm": {
+        "data": {
+          "api_key": "API Key"
+        },
+        "data_description": {
+          "api_key": "Enter a valid API key to restore access to the Gatus instance"
+        },
+        "description": "Re-authenticate with your Gatus instance"
+      },
+      "reconfigure": {
+        "data": {
+          "url": "Gatus URL",
+          "api_key": "API Key (optional)"
+        },
+        "data_description": {
+          "url": "New base URL for the Gatus instance",
+          "api_key": "Leave blank to remove authentication"
+        },
+        "description": "Update the connection settings for your Gatus instance"
       }
     },
     "error": {
@@ -21,7 +41,30 @@
       "unknown": "Unexpected error. Check the logs."
     },
     "abort": {
-      "already_configured": "A Gatus instance at this URL is already configured."
+      "already_configured": "A Gatus instance at this URL is already configured.",
+      "reauth_successful": "Re-authentication was successful.",
+      "reconfigure_successful": "Configuration was updated successfully."
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Scan interval (seconds)",
+          "api_key": "API Key (optional)"
+        },
+        "data_description": {
+          "scan_interval": "How often to poll Gatus (30–300 seconds)",
+          "api_key": "Leave blank to use the key from setup, or enter a new key to rotate it"
+        }
+      }
+    },
+    "error": {
+      "scan_interval_out_of_range": "Scan interval must be between 30 and 300 seconds."
+    }
+  },
+  "exceptions": {
+    "cannot_connect": { "message": "Unable to reach Gatus at {url}" },
+    "invalid_auth": { "message": "Invalid API key for Gatus at {url}" }
   }
 }

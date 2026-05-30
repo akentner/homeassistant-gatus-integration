@@ -38,7 +38,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: GatusConfigEntry) -> boo
     coordinator = GatusDataUpdateCoordinator(
         hass,
         url=entry.data["url"],
-        api_key=entry.data.get("api_key"),
+        api_key=entry.options.get("api_key", entry.data.get("api_key")),
         scan_interval=entry.options.get("scan_interval", DEFAULT_SCAN_INTERVAL),
     )
 
