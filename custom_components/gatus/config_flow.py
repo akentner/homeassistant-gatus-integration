@@ -8,7 +8,9 @@ Tests use MockConfigEntry which bypasses this flow entirely.
 
 from __future__ import annotations
 
-from homeassistant.config_entries import ConfigFlow
+from typing import Any
+
+from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 
 from .const import DOMAIN
 
@@ -21,13 +23,11 @@ class GatusConfigFlow(ConfigFlow, domain=DOMAIN):
 
     VERSION = 1
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Handle the initial step — implemented in Phase 2."""
-        raise NotImplementedError(
-            "Config flow async_step_user is implemented in Phase 2"
-        )
+        raise NotImplementedError("Config flow async_step_user is implemented in Phase 2")
 
-    async def async_step_reauth(self, entry_data=None):
+    async def async_step_reauth(self, entry_data: dict[str, Any]) -> ConfigFlowResult:
         """Handle re-authentication — implemented in Phase 2.
 
         This stub prevents HA from raising UnknownStep when ConfigEntryAuthFailed

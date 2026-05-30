@@ -570,17 +570,17 @@ python_version = "3.14"
 | A3 | All dev packages (ruff, pytest, mypy, etc.) are legitimate ecosystem tools | Package Legitimacy Audit | Low — all are well-known; slopcheck expected to return [OK] |
 | A4 | `pytest-asyncio` 1.4.0 (CLAUDE.md pin) resolves against latest `pytest-homeassistant-custom-component` | Standard Stack | Medium — if wrong, uv will surface the conflict and pin to latest compatible version |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **`config_flow: true` with no `config_flow.py` in Phase 1**
    - What we know: D-08/D-09 finalize manifest in Phase 1; Config Flow is Phase 2.
    - What's unclear: Whether a minimal stub is needed for the integration to load cleanly in real HA (not just tests).
-   - Recommendation: Add a comment-only stub in Phase 1, or note in Phase 1 success criteria that "loads cleanly" applies to the test environment only (real HA UI setup requires Phase 2).
+   - RESOLVED: A functional stub `config_flow.py` IS required in Phase 1. HA's config entry machinery tries to import `config_flow` when loading any entry with `config_flow: true` in the manifest — even in tests. Without the stub, all `async_setup_entry` calls fail with "Platform gatus.config_flow not found". Additionally, `ConfigEntryAuthFailed` triggers `async_step_reauth` — the stub must include this method to prevent `UnknownStep` errors at teardown. Added `config_flow.py` stub with `async_step_user` (raises NotImplementedError) and `async_step_reauth` (returns abort) in Plan 03.
 
 2. **GitHub repo URL for `documentation` and `issue_tracker`**
    - What we know: D-09 omits these fields; they're required/recommended.
    - What's unclear: Whether the repo is `akentner/homeassistant-gatus-integration` or another slug.
-   - Recommendation: Use `https://github.com/akentner/homeassistant-gatus-integration` as a placeholder; user can correct at any point.
+   - RESOLVED: Used `https://github.com/akentner/homeassistant-gatus-integration` as confirmed by the project directory name and codeowners (`@akentner`). Plan 01 added these fields to manifest.json.
 
 ## Environment Availability
 
