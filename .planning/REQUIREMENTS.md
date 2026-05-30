@@ -8,8 +8,8 @@
 - [x] **SETUP-02**: Entity_id prefix is configurable in Config Flow (default: `gatus_`, applied to all entity object IDs)
 - [x] **SETUP-03**: Config Flow validates URL reachability before saving
 - [x] **SETUP-04**: Config Flow rejects duplicate Gatus URL (normalized, strips trailing slash)
-- [ ] **SETUP-05**: User can update scan interval (30–300 s) via Options Flow after setup
-- [ ] **SETUP-06**: Multiple Gatus instances can coexist as separate Config Entries
+- [x] **SETUP-05**: User can update scan interval (30–300 s) via Options Flow after setup
+- [x] **SETUP-06**: Multiple Gatus instances can coexist as separate Config Entries
 
 ### Data Polling
 
@@ -76,8 +76,8 @@
 | SETUP-02 | Phase 2 (Config Flow) | Complete |
 | SETUP-03 | Phase 2 (Config Flow) | Complete |
 | SETUP-04 | Phase 2 (Config Flow) | Complete |
-| SETUP-05 | Phase 2 (Config Flow) | Pending |
-| SETUP-06 | Phase 2 (Config Flow) | Pending |
+| SETUP-05 | Phase 2 (Config Flow) | Complete |
+| SETUP-06 | Phase 2 (Config Flow) | Complete |
 | SENS-01 | Phase 3 (Entity Platforms) | Pending |
 | SENS-02 | Phase 3 (Entity Platforms) | Pending |
 | SENS-03 | Phase 3 (Entity Platforms) | Pending |
