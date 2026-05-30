@@ -13,7 +13,7 @@ Greenfield custom component built in strict technical dependency order: coordina
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Core Scaffold** - DataUpdateCoordinator, `__init__.py`, and constants that everything else depends on
+- [x] **Phase 1: Core Scaffold** - DataUpdateCoordinator, `__init__.py`, and constants that everything else depends on
 - [ ] **Phase 2: Config Flow** - UI setup for URL + API key + prefix; Options Flow for scan interval
 - [ ] **Phase 3: Entity Platforms** - All sensor entities (binary_sensor, response time, uptime, conditions) with device grouping
 - [ ] **Phase 4: Distribution** - HACS-ready hacs.json and validated manifest.json
@@ -46,7 +46,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 01-03-PLAN.md — Lifecycle: async_setup_entry / async_unload_entry + full suite verification
+- [x] 01-03-PLAN.md — Lifecycle: async_setup_entry / async_unload_entry + full suite verification
 
 ### Phase 2: Config Flow
 
@@ -99,7 +99,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Scaffold | 2/3 | In Progress|  |
+| 1. Core Scaffold | 3/3 | Complete | 2026-05-31 |
 | 2. Config Flow | 0/? | Not started | - |
 | 3. Entity Platforms | 0/? | Not started | - |
 | 4. Distribution | 0/? | Not started | - |
