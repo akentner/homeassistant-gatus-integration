@@ -1,0 +1,27 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "data": {
+          "url": "Gatus URL",
+          "api_key": "API Key (optional)",
+          "prefix": "Entity ID prefix"
+        },
+        "data_description": {
+          "url": "Base URL of your Gatus instance (e.g. https://status.example.com)",
+          "api_key": "Leave blank if Gatus has no authentication configured",
+          "prefix": "Prefix for entity object IDs (default: gatus_)"
+        },
+        "description": "Connect to your Gatus monitoring instance"
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to reach the Gatus instance. Check the URL and try again.",
+      "invalid_auth": "Authentication failed. Check your API key.",
+      "unknown": "Unexpected error. Check the logs."
+    },
+    "abort": {
+      "already_configured": "A Gatus instance at this URL is already configured."
+    }
+  }
+}
