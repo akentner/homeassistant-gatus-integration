@@ -67,7 +67,7 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 02-01-PLAN.md — Config Flow core: validation helper + async_step_user + strings (SETUP-01..04)
+- [x] 02-01-PLAN.md — Config Flow core: validation helper + async_step_user + strings (SETUP-01..04)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -109,6 +109,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Scaffold | 3/3 | Complete | 2026-05-31 |
-| 2. Config Flow | 0/? | Not started | - |
+| 2. Config Flow | 1/2 | In Progress|  |
 | 3. Entity Platforms | 0/? | Not started | - |
 | 4. Distribution | 0/? | Not started | - |

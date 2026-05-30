@@ -4,10 +4,10 @@
 
 ### Setup & Configuration
 
-- [ ] **SETUP-01**: User can add a Gatus instance via Config Flow (URL, optional API key, optional entity_id prefix)
-- [ ] **SETUP-02**: Entity_id prefix is configurable in Config Flow (default: `gatus_`, applied to all entity object IDs)
-- [ ] **SETUP-03**: Config Flow validates URL reachability before saving
-- [ ] **SETUP-04**: Config Flow rejects duplicate Gatus URL (normalized, strips trailing slash)
+- [x] **SETUP-01**: User can add a Gatus instance via Config Flow (URL, optional API key, optional entity_id prefix)
+- [x] **SETUP-02**: Entity_id prefix is configurable in Config Flow (default: `gatus_`, applied to all entity object IDs)
+- [x] **SETUP-03**: Config Flow validates URL reachability before saving
+- [x] **SETUP-04**: Config Flow rejects duplicate Gatus URL (normalized, strips trailing slash)
 - [ ] **SETUP-05**: User can update scan interval (30–300 s) via Options Flow after setup
 - [ ] **SETUP-06**: Multiple Gatus instances can coexist as separate Config Entries
 
@@ -72,10 +72,10 @@
 | POLL-02 | Phase 1 (Core Scaffold) | Complete |
 | POLL-03 | Phase 1 (Core Scaffold) | Complete |
 | POLL-04 | Phase 1 (Core Scaffold) | Complete |
-| SETUP-01 | Phase 2 (Config Flow) | Pending |
-| SETUP-02 | Phase 2 (Config Flow) | Pending |
-| SETUP-03 | Phase 2 (Config Flow) | Pending |
-| SETUP-04 | Phase 2 (Config Flow) | Pending |
+| SETUP-01 | Phase 2 (Config Flow) | Complete |
+| SETUP-02 | Phase 2 (Config Flow) | Complete |
+| SETUP-03 | Phase 2 (Config Flow) | Complete |
+| SETUP-04 | Phase 2 (Config Flow) | Complete |
 | SETUP-05 | Phase 2 (Config Flow) | Pending |
 | SETUP-06 | Phase 2 (Config Flow) | Pending |
 | SENS-01 | Phase 3 (Entity Platforms) | Pending |
