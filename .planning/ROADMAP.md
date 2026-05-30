@@ -62,7 +62,16 @@ Plans:
   5. User can change scan interval (30–300 s) via Options Flow after setup without removing and re-adding the entry
   6. Two separate Gatus instances can coexist as distinct Config Entries without conflict
 
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 02-01-PLAN.md — Config Flow core: validation helper + async_step_user + strings (SETUP-01..04)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 02-02-PLAN.md — Extended flows: Options + Reauth + Reconfigure + __init__ api_key fix (SETUP-05..06)
 
 ### Phase 3: Entity Platforms
 
