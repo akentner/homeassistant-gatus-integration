@@ -88,6 +88,12 @@ None yet.
 
 - Open: Uptime % data source needs verification — `/api/v1/endpoints/statuses` may require `?duration=604800000000000` param for true 7-day window. Verify against live Gatus before Phase 3.
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260531-g5q | Remove conditions entities, add group binary sensors with green/red endpoint attributes | 2026-05-31 | b650423 | [260531-g5q-group-binary-sensors](.planning/quick/260531-g5q-group-binary-sensors/) |
+
 ## Deferred Items
 
 Items acknowledged and carried forward from previous milestone close:
@@ -98,6 +104,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-31T00:33:17.703Z
-Stopped at: Completed 03-03-PLAN.md
+Last session: 2026-05-31T09:38:05.006Z
+Stopped at: Completed quick task 260531-g5q — remove conditions entities, add group binary sensors
 Resume file: None
