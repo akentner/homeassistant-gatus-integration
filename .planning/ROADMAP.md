@@ -86,8 +86,20 @@ Plans:
   4. Entity unique IDs use `{entry_id}_{endpoint_key}_{sensor_type}`; entity object IDs use `{prefix}{endpoint_key}_{sensor_type}`
   5. When a Gatus endpoint disappears from the API response, its corresponding HA entities are removed from the entity registry
 
-**Plans**: TBD
-**UI hint**: no
+**Plans**: 3 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 03-01-PLAN.md — Coordinator extension (consecutive_failures, uptime_pct) + GatusEntity base class
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 03-02-PLAN.md — binary_sensor.py + sensor.py (all 4 entity types + stale cleanup)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 03-03-PLAN.md — __init__.py platform forwarding + integration tests
 
 ### Phase 4: Distribution
 
