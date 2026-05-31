@@ -2,11 +2,9 @@
 
 Implements the config entry lifecycle:
   - async_setup_entry: creates GatusDataUpdateCoordinator, calls
-    async_config_entry_first_refresh, stores coordinator in entry.runtime_data.
-  - async_unload_entry: returns True; HA clears entry.runtime_data automatically.
-
-Phase 1: no platform forwarding (no entities yet). Sensor/binary_sensor
-forwarding will be added in Phase 3.
+    async_config_entry_first_refresh, stores coordinator in entry.runtime_data,
+    then forwards setup to binary_sensor and sensor platforms.
+  - async_unload_entry: unloads all platforms; HA clears entry.runtime_data automatically.
 """
 
 from __future__ import annotations
@@ -19,7 +17,9 @@ from .coordinator import GatusDataUpdateCoordinator
 
 type GatusConfigEntry = ConfigEntry[GatusDataUpdateCoordinator]
 
-__all__ = ["GatusConfigEntry", "async_setup_entry", "async_unload_entry"]
+PLATFORMS: list[str] = ["binary_sensor", "sensor"]
+
+__all__ = ["GatusConfigEntry", "PLATFORMS", "async_setup_entry", "async_unload_entry"]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: GatusConfigEntry) -> bool:
@@ -49,15 +49,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: GatusConfigEntry) -> boo
     # Only assign runtime_data after a successful first refresh (T-03-01 / Pitfall 5)
     entry.runtime_data = coordinator
 
-    # Phase 1: no platforms; async_forward_entry_setups added in Phase 3
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: GatusConfigEntry) -> bool:
     """Unload a Gatus config entry.
 
-    Phase 1: no platforms to unload. HA clears entry.runtime_data automatically
-    after this function returns True.
+    Unloads binary_sensor and sensor platforms; HA clears entry.runtime_data
+    automatically after this function returns True.
     """
-    # Phase 1: nothing to unload; platform unloading added in Phase 3
-    return True
+    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
