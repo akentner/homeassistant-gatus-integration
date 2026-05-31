@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to discuss/plan
-stopped_at: Phase 3 context gathered
-last_updated: "2026-05-31T00:06:51.868Z"
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-05-31T00:18:37.718Z"
 last_activity: 2026-05-31
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 8
+  completed_plans: 6
   percent: 25
 ---
 
@@ -56,6 +56,7 @@ Progress: [██░░░░░░░░] 25%
 | Phase 01-core-scaffold P02 | 7 minutes | 2 tasks | 3 files |
 | Phase 02-config-flow P01 | 15 | 2 tasks | 5 files |
 | Phase 02-config-flow P02 | 234 | 2 tasks | 5 files |
+| Phase 03-entity-platforms P01 | 4 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,8 @@ Recent decisions affecting current work:
 - [Phase 01-02]: async_add_listener cancel() required in tests to prevent lingering HA polling timers at teardown
 - [Phase 02-config-flow]: Shared _validate_gatus_connection helper is module-level for reuse by Reconfigure/Reauth flows (D-02)
 - [Phase 02-config-flow]: NumberSelector without min/max in options schema — HA raises InvalidData before handler code; bounds validated in handler instead
+- [Phase 03-entity-platforms]: consecutive_failures scans results newest-first; uptime_pct is None (not 0.0) when results empty
+- [Phase 03-entity-platforms]: GatusEntity accepts platform_domain string to set entity_id prefix for binary_sensor and sensor
 
 ### Pending Todos
 
@@ -93,6 +96,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-31T00:06:51.865Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-entity-platforms/03-CONTEXT.md
+Last session: 2026-05-31T00:18:37.714Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: None
