@@ -109,6 +109,13 @@ class GatusBinarySensorEntity(GatusEntity, BinarySensorEntity):
             "error_reason": error_reason,                   # SENS-03
             "response_duration_ms": ep["duration_ms"],      # SENS-04
             "consecutive_failures": ep["consecutive_failures"],  # SENS-05
+            "conditions": [                                 # condition results
+                {
+                    "condition": cr.get("condition", ""),
+                    "success": cr.get("success", False),
+                }
+                for cr in ep["condition_results"]
+            ],
         }
 
 
