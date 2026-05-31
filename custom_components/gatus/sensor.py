@@ -17,8 +17,7 @@ from .entity import GatusEntity
 PLATFORM_DOMAIN = "sensor"
 SENSOR_TYPE_RESPONSE = "response_time"
 SENSOR_TYPE_UPTIME = "uptime"
-SENSOR_TYPE_CONDITIONS = "conditions"
-_SENSOR_TYPES = (SENSOR_TYPE_RESPONSE, SENSOR_TYPE_UPTIME, SENSOR_TYPE_CONDITIONS)
+_SENSOR_TYPES = (SENSOR_TYPE_RESPONSE, SENSOR_TYPE_UPTIME)
 
 
 async def async_setup_entry(
@@ -34,7 +33,6 @@ async def async_setup_entry(
     for key in coordinator.data:
         entities.append(GatusResponseTimeSensor(coordinator, entry.entry_id, key, prefix))
         entities.append(GatusUptimeSensor(coordinator, entry.entry_id, key, prefix))
-        entities.append(GatusConditionsSensor(coordinator, entry.entry_id, key, prefix))
     async_add_entities(entities)
 
     # DEVICE-04: stale entity cleanup on each coordinator update
@@ -111,33 +109,4 @@ class GatusUptimeSensor(GatusEntity, SensorEntity):
         return self._endpoint["uptime_pct"]
 
 
-class GatusConditionsSensor(GatusEntity, SensorEntity):
-    """Conditions pass/total string for one Gatus endpoint (SENS-08)."""
 
-    def __init__(self, coordinator, entry_id, endpoint_key, prefix) -> None:
-        super().__init__(
-            coordinator,
-            entry_id=entry_id,
-            endpoint_key=endpoint_key,
-            sensor_type=SENSOR_TYPE_CONDITIONS,
-            prefix=prefix,
-            platform_domain=PLATFORM_DOMAIN,
-        )
-        self._attr_name = f"{coordinator.data[endpoint_key]['name']} Conditions"
-
-    @property
-    def native_value(self) -> str:
-        """Return 'X/Y' — passed_conditions/total_conditions."""
-        crs = self._endpoint["condition_results"]
-        total = len(crs)
-        passed = sum(1 for cr in crs if cr.get("success", False))
-        return f"{passed}/{total}"
-
-    @property
-    def extra_state_attributes(self) -> dict[str, object]:
-        return {
-            "condition_details": [
-                {"condition": cr.get("condition", ""), "success": bool(cr.get("success", False))}
-                for cr in self._endpoint["condition_results"]
-            ]
-        }
