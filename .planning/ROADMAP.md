@@ -111,7 +111,13 @@ Plans:
   1. `hacs.json` is present with correct `name`, `homeassistant: "2025.1.0"`, and `hacs: "2.0.5"` fields; HACS accepts the repository
   2. `manifest.json` passes hassfest validation with all required fields present: `domain`, `name`, `codeowners`, `config_flow: true`, `integration_type: hub`, `iot_class: cloud_polling`, `version`
 
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+**Wave 1** *(both plans run in parallel)*
+
+- [ ] 04-01-PLAN.md — README.md + brand/icon.png (HACS information + brands checks)
+- [ ] 04-02-PLAN.md — GitHub Actions validate.yml + manifest/hacs field verification
 
 ## Progress
 
