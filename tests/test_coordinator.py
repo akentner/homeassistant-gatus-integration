@@ -198,6 +198,152 @@ async def test_scheduled_refetch_after_60_seconds(hass, aioclient_mock):
     cancel()
 
 
+async def test_parse_endpoint_consecutive_failures(hass, aioclient_mock):
+    """Task 1 TDD: consecutive_failures counts leading failures (newest-first).
+
+    Endpoints:
+      - ep_a: [fail, fail, pass] → consecutive_failures=2, uptime_pct=33.33...
+      - ep_b: [pass, fail]       → consecutive_failures=0, uptime_pct=50.0
+      - ep_c: []                 → consecutive_failures=0, uptime_pct=None
+    """
+    ep_a = {
+        "key": "test_ep-a",
+        "name": "ep-a",
+        "group": "test",
+        "results": [
+            {"success": False, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:03Z"},
+            {"success": False, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:02Z"},
+            {"success": True, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:01Z"},
+        ],
+    }
+    ep_b = {
+        "key": "test_ep-b",
+        "name": "ep-b",
+        "group": "test",
+        "results": [
+            {"success": True, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:02Z"},
+            {"success": False, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:01Z"},
+        ],
+    }
+    ep_c = {
+        "key": "test_ep-c",
+        "name": "ep-c",
+        "group": "test",
+        "results": [],
+    }
+
+    aioclient_mock.get(STATUSES_URL, json=[ep_a, ep_b, ep_c])
+
+    coordinator = GatusDataUpdateCoordinator(
+        hass, url=GATUS_URL, api_key=None, scan_interval=60
+    )
+    await coordinator.async_refresh()
+
+    a = coordinator.data["test_ep-a"]
+    assert a["consecutive_failures"] == 2
+    assert abs(a["uptime_pct"] - (1 / 3 * 100.0)) < 0.01
+
+    b = coordinator.data["test_ep-b"]
+    assert b["consecutive_failures"] == 0
+    assert b["uptime_pct"] == 50.0
+
+    c = coordinator.data["test_ep-c"]
+    assert c["consecutive_failures"] == 0
+    assert c["uptime_pct"] is None
+
+
+async def test_parse_endpoint_uptime_none_when_no_results(hass, aioclient_mock):
+    """Task 1 TDD: uptime_pct is None when results list is empty."""
+    ep_empty = {
+        "key": "test_empty",
+        "name": "empty",
+        "group": "test",
+        "results": [],
+    }
+    aioclient_mock.get(STATUSES_URL, json=[ep_empty])
+
+    coordinator = GatusDataUpdateCoordinator(
+        hass, url=GATUS_URL, api_key=None, scan_interval=60
+    )
+    await coordinator.async_refresh()
+
+    ep = coordinator.data["test_empty"]
+    assert ep["uptime_pct"] is None
+    assert ep["consecutive_failures"] == 0
+
+
+async def test_parse_endpoint_all_pass_uptime_100(hass, aioclient_mock):
+    """Task 1 TDD: all 3 passing results → uptime_pct=100.0, consecutive_failures=0."""
+    ep_all_pass = {
+        "key": "test_all-pass",
+        "name": "all-pass",
+        "group": "test",
+        "results": [
+            {"success": True, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:01Z"},
+            {"success": True, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:02Z"},
+            {"success": True, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:03Z"},
+        ],
+    }
+    aioclient_mock.get(STATUSES_URL, json=[ep_all_pass])
+
+    coordinator = GatusDataUpdateCoordinator(
+        hass, url=GATUS_URL, api_key=None, scan_interval=60
+    )
+    await coordinator.async_refresh()
+
+    ep = coordinator.data["test_all-pass"]
+    assert ep["uptime_pct"] == 100.0
+    assert ep["consecutive_failures"] == 0
+
+
+async def test_parse_endpoint_all_fail_consecutive(hass, aioclient_mock):
+    """Task 1 TDD: all 3 failing results → consecutive_failures=3, uptime_pct=0.0."""
+    ep_all_fail = {
+        "key": "test_all-fail",
+        "name": "all-fail",
+        "group": "test",
+        "results": [
+            {"success": False, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:01Z"},
+            {"success": False, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:02Z"},
+            {"success": False, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:03Z"},
+        ],
+    }
+    aioclient_mock.get(STATUSES_URL, json=[ep_all_fail])
+
+    coordinator = GatusDataUpdateCoordinator(
+        hass, url=GATUS_URL, api_key=None, scan_interval=60
+    )
+    await coordinator.async_refresh()
+
+    ep = coordinator.data["test_all-fail"]
+    assert ep["consecutive_failures"] == 3
+    assert ep["uptime_pct"] == 0.0
+
+
+async def test_parse_endpoint_uptime_50_pct(hass, aioclient_mock):
+    """Task 1 TDD: 2 pass + 2 fail → uptime_pct=50.0."""
+    ep_half = {
+        "key": "test_half",
+        "name": "half",
+        "group": "test",
+        "results": [
+            {"success": True, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:01Z"},
+            {"success": True, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:02Z"},
+            {"success": False, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:03Z"},
+            {"success": False, "duration": 1_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:04Z"},
+        ],
+    }
+    aioclient_mock.get(STATUSES_URL, json=[ep_half])
+
+    coordinator = GatusDataUpdateCoordinator(
+        hass, url=GATUS_URL, api_key=None, scan_interval=60
+    )
+    await coordinator.async_refresh()
+
+    ep = coordinator.data["test_half"]
+    assert ep["uptime_pct"] == 50.0
+
+
 async def test_disappearing_endpoint_absent_from_data(hass, aioclient_mock):
     """Test 9 (D-02): Endpoint disappears from API — key removed from coordinator.data.
 

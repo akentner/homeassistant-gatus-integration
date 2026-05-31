@@ -38,6 +38,8 @@ class GatusEndpoint(TypedDict):
     duration_ms: int  # latest result duration in ms (Gatus nanoseconds // 1_000_000)
     timestamp: str  # ISO 8601 timestamp of latest result
     condition_results: list[dict[str, object]]  # raw conditionResults from latest result
+    consecutive_failures: int  # count of leading failed results (newest first)
+    uptime_pct: float | None  # success_count/len(results)*100; None if results empty
 
 
 class GatusDataUpdateCoordinator(DataUpdateCoordinator[dict[str, GatusEndpoint]]):
@@ -96,9 +98,7 @@ class GatusDataUpdateCoordinator(DataUpdateCoordinator[dict[str, GatusEndpoint]]
             raise UpdateFailed(f"Error communicating with Gatus API: {err}") from err
 
         if resp.status in (401, 403):
-            raise ConfigEntryAuthFailed(
-                f"Authentication failed (HTTP {resp.status})"
-            )
+            raise ConfigEntryAuthFailed(f"Authentication failed (HTTP {resp.status})")
 
         if resp.status != 200:
             raise UpdateFailed(f"Unexpected HTTP {resp.status} from Gatus API")
@@ -109,9 +109,7 @@ class GatusDataUpdateCoordinator(DataUpdateCoordinator[dict[str, GatusEndpoint]]
             raise UpdateFailed(f"Invalid JSON from Gatus: {err}") from err
 
         if not isinstance(raw_list, list):
-            raise UpdateFailed(
-                f"Invalid JSON from Gatus: expected a list, got {type(raw_list).__name__}"
-            )
+            raise UpdateFailed(f"Invalid JSON from Gatus: expected a list, got {type(raw_list).__name__}")
 
         return {str(ep["key"]): _parse_endpoint(ep) for ep in raw_list}
 
@@ -131,6 +129,19 @@ def _parse_endpoint(raw: dict[str, object]) -> GatusEndpoint:
     condition_raw = latest.get("conditionResults")
     condition_results: list[dict[str, object]] = condition_raw if isinstance(condition_raw, list) else []
 
+    # consecutive_failures: scan results newest-first, count leading failures
+    consecutive_failures = 0
+    for r in results:
+        if not r.get("success", False):
+            consecutive_failures += 1
+        else:
+            break
+
+    # uptime_pct: None when no results (per D-03)
+    uptime_pct: float | None = None
+    if results:
+        uptime_pct = sum(1 for r in results if r.get("success", False)) / len(results) * 100.0
+
     return GatusEndpoint(
         key=str(raw.get("key", "")),
         name=str(raw.get("name", "")),
@@ -139,4 +150,6 @@ def _parse_endpoint(raw: dict[str, object]) -> GatusEndpoint:
         duration_ms=duration_ns // 1_000_000,
         timestamp=str(latest.get("timestamp", "")),
         condition_results=condition_results,
+        consecutive_failures=consecutive_failures,
+        uptime_pct=uptime_pct,
     )
