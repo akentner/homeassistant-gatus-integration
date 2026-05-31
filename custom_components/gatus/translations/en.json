@@ -8,7 +8,7 @@
           "prefix": "Entity ID prefix"
         },
         "data_description": {
-          "url": "Base URL of your Gatus instance (e.g. https://status.example.com)",
+          "url": "Base URL of your Gatus instance",
           "api_key": "Leave blank if Gatus has no authentication configured",
           "prefix": "Prefix for entity object IDs (default: gatus_)"
         },
