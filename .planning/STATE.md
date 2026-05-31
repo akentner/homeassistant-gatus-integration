@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to discuss/plan
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-05-31T00:20:29.971Z"
+stopped_at: Completed 03-03-PLAN.md
+last_updated: "2026-05-31T00:33:22.315Z"
 last_activity: 2026-05-31
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
   percent: 25
 ---
 
@@ -57,6 +57,7 @@ Progress: [██░░░░░░░░] 25%
 | Phase 02-config-flow P01 | 15 | 2 tasks | 5 files |
 | Phase 02-config-flow P02 | 234 | 2 tasks | 5 files |
 | Phase 03-entity-platforms P01 | 4 | 2 tasks | 3 files |
+| Phase 03-entity-platforms P03 | 30 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,7 @@ Recent decisions affecting current work:
 - [Phase 02-config-flow]: NumberSelector without min/max in options schema — HA raises InvalidData before handler code; bounds validated in handler instead
 - [Phase 03-entity-platforms]: consecutive_failures scans results newest-first; uptime_pct is None (not 0.0) when results empty
 - [Phase 03-entity-platforms]: GatusEntity accepts platform_domain string to set entity_id prefix for binary_sensor and sensor
+- [Phase 03-entity-platforms]: PLATFORMS constant exported from __init__.py; top-level import required in test files to anchor custom_components namespace package before HA loader shadows it
 
 ### Pending Todos
 
@@ -96,6 +98,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-31T00:20:29.967Z
-Stopped at: Completed 03-02-PLAN.md
+Last session: 2026-05-31T00:33:17.703Z
+Stopped at: Completed 03-03-PLAN.md
 Resume file: None

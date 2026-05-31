@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Core Scaffold** - DataUpdateCoordinator, `__init__.py`, and constants that everything else depends on
 - [x] **Phase 2: Config Flow** - UI setup for URL + API key + prefix; Options Flow for scan interval (completed 2026-05-30)
-- [ ] **Phase 3: Entity Platforms** - All sensor entities (binary_sensor, response time, uptime, conditions) with device grouping
+- [x] **Phase 3: Entity Platforms** - All sensor entities (binary_sensor, response time, uptime, conditions) with device grouping (completed 2026-05-31)
 - [ ] **Phase 4: Distribution** - HACS-ready hacs.json and validated manifest.json
 
 ## Phase Details
@@ -99,7 +99,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 03-03-PLAN.md — __init__.py platform forwarding + integration tests
+- [x] 03-03-PLAN.md — __init__.py platform forwarding + integration tests
 
 ### Phase 4: Distribution
 
@@ -122,5 +122,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Core Scaffold | 3/3 | Complete | 2026-05-31 |
 | 2. Config Flow | 2/2 | Complete   | 2026-05-30 |
-| 3. Entity Platforms | 2/3 | In Progress|  |
+| 3. Entity Platforms | 3/3 | Complete   | 2026-05-31 |
 | 4. Distribution | 0/? | Not started | - |
