@@ -20,24 +20,24 @@
 
 ### Entities — Binary Sensor
 
-- [ ] **SENS-01**: Each Gatus endpoint produces one Binary Sensor (device_class: connectivity; on=up, off=down)
-- [ ] **SENS-02**: Binary Sensor carries attribute `last_check_timestamp` (ISO timestamp of latest result)
-- [ ] **SENS-03**: Binary Sensor carries attribute `error_reason` (which condition failed, or null if up)
-- [ ] **SENS-04**: Binary Sensor carries attribute `response_duration_ms` (last check duration in ms)
+- [x] **SENS-01**: Each Gatus endpoint produces one Binary Sensor (device_class: connectivity; on=up, off=down)
+- [x] **SENS-02**: Binary Sensor carries attribute `last_check_timestamp` (ISO timestamp of latest result)
+- [x] **SENS-03**: Binary Sensor carries attribute `error_reason` (which condition failed, or null if up)
+- [x] **SENS-04**: Binary Sensor carries attribute `response_duration_ms` (last check duration in ms)
 - [x] **SENS-05**: Binary Sensor carries attribute `consecutive_failures` (count of consecutive failed checks)
 
 ### Entities — Sensors
 
-- [ ] **SENS-06**: Each Gatus endpoint produces one Response Time sensor (device_class: duration; unit: ms; int)
+- [x] **SENS-06**: Each Gatus endpoint produces one Response Time sensor (device_class: duration; unit: ms; int)
 - [x] **SENS-07**: Each Gatus endpoint produces one Uptime % sensor (7-day window; float; state_class: measurement)
-- [ ] **SENS-08**: Each Gatus endpoint produces one Conditions sensor (state: "X/Y" string — passed/total conditions)
+- [x] **SENS-08**: Each Gatus endpoint produces one Conditions sensor (state: "X/Y" string — passed/total conditions)
 
 ### Device & Entity Structure
 
 - [x] **DEVICE-01**: Endpoints in the same Gatus group share one HA Device (identifiers: `{DOMAIN, entry_id + group_name}`)
 - [x] **DEVICE-02**: Entity unique IDs use format `{entry_id}_{endpoint_key}_{sensor_type}`
 - [x] **DEVICE-03**: Entity object IDs use format `{prefix}{endpoint_key}_{sensor_type}` where prefix is from SETUP-02
-- [ ] **DEVICE-04**: Entities removed from HA when the corresponding Gatus endpoint disappears (active reconciliation via entity registry)
+- [x] **DEVICE-04**: Entities removed from HA when the corresponding Gatus endpoint disappears (active reconciliation via entity registry)
 
 ### Distribution
 
@@ -78,18 +78,18 @@
 | SETUP-04 | Phase 2 (Config Flow) | Complete |
 | SETUP-05 | Phase 2 (Config Flow) | Complete |
 | SETUP-06 | Phase 2 (Config Flow) | Complete |
-| SENS-01 | Phase 3 (Entity Platforms) | Pending |
-| SENS-02 | Phase 3 (Entity Platforms) | Pending |
-| SENS-03 | Phase 3 (Entity Platforms) | Pending |
-| SENS-04 | Phase 3 (Entity Platforms) | Pending |
+| SENS-01 | Phase 3 (Entity Platforms) | Complete |
+| SENS-02 | Phase 3 (Entity Platforms) | Complete |
+| SENS-03 | Phase 3 (Entity Platforms) | Complete |
+| SENS-04 | Phase 3 (Entity Platforms) | Complete |
 | SENS-05 | Phase 3 (Entity Platforms) | Complete |
-| SENS-06 | Phase 3 (Entity Platforms) | Pending |
+| SENS-06 | Phase 3 (Entity Platforms) | Complete |
 | SENS-07 | Phase 3 (Entity Platforms) | Complete |
-| SENS-08 | Phase 3 (Entity Platforms) | Pending |
+| SENS-08 | Phase 3 (Entity Platforms) | Complete |
 | DEVICE-01 | Phase 3 (Entity Platforms) | Complete |
 | DEVICE-02 | Phase 3 (Entity Platforms) | Complete |
 | DEVICE-03 | Phase 3 (Entity Platforms) | Complete |
-| DEVICE-04 | Phase 3 (Entity Platforms) | Pending |
+| DEVICE-04 | Phase 3 (Entity Platforms) | Complete |
 | DIST-01 | Phase 4 (Distribution) | Pending |
 | DIST-02 | Phase 4 (Distribution) | Pending |
 

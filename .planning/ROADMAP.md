@@ -95,7 +95,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 03-02-PLAN.md — binary_sensor.py + sensor.py (all 4 entity types + stale cleanup)
+- [x] 03-02-PLAN.md — binary_sensor.py + sensor.py (all 4 entity types + stale cleanup)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -122,5 +122,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Core Scaffold | 3/3 | Complete | 2026-05-31 |
 | 2. Config Flow | 2/2 | Complete   | 2026-05-30 |
-| 3. Entity Platforms | 1/3 | In Progress|  |
+| 3. Entity Platforms | 2/3 | In Progress|  |
 | 4. Distribution | 0/? | Not started | - |
