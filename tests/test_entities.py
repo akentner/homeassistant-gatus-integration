@@ -64,26 +64,6 @@ ENDPOINT_A_DOWN_RESPONSE = [
     }
 ]
 
-ENDPOINT_A_WITH_CONDITIONS = [
-    {
-        "key": "core_my-service",
-        "name": "my-service",
-        "group": "core",
-        "results": [
-            {
-                "success": True,
-                "duration": 20_000_000,
-                "conditionResults": [
-                    {"condition": "[STATUS] == 200", "success": True},
-                    {"condition": "[BODY] contains 'ok'", "success": True},
-                    {"condition": "[RESPONSE_TIME] < 500", "success": False},
-                ],
-                "timestamp": "2024-01-01T00:02:00Z",
-            }
-        ],
-    }
-]
-
 ENDPOINT_A_NO_RESULTS = [
     {
         "key": "core_my-service",
@@ -91,6 +71,27 @@ ENDPOINT_A_NO_RESULTS = [
         "group": "core",
         "results": [],
     }
+]
+
+TWO_GROUP_RESPONSE = [
+    {
+        "key": "core_service-a",
+        "name": "service-a",
+        "group": "core",
+        "results": [{"success": True, "duration": 10_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:00Z"}],
+    },
+    {
+        "key": "core_service-b",
+        "name": "service-b",
+        "group": "core",
+        "results": [{"success": False, "duration": 5_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:00Z"}],
+    },
+    {
+        "key": "edge_proxy",
+        "name": "proxy",
+        "group": "edge",
+        "results": [{"success": True, "duration": 3_000_000, "conditionResults": [], "timestamp": "2024-01-01T00:00:00Z"}],
+    },
 ]
 
 
@@ -181,31 +182,6 @@ async def test_uptime_sensor_none_when_no_results(hass, aioclient_mock) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Test 6: conditions sensor "X/Y" format (SENS-08)
-# ---------------------------------------------------------------------------
-async def test_conditions_sensor_xoy_string(hass, aioclient_mock) -> None:
-    """SENS-08: Conditions sensor state is 'X/Y' — passed/total conditions."""
-    await _setup_integration(hass, aioclient_mock, response=ENDPOINT_A_WITH_CONDITIONS)
-
-    state = hass.states.get("sensor.gatus_core_my_service_conditions")
-    assert state is not None
-    # 2 of 3 conditions pass
-    assert state.state == "2/3"
-
-
-# ---------------------------------------------------------------------------
-# Test 6b: conditions sensor "0/0" for empty conditionResults
-# ---------------------------------------------------------------------------
-async def test_conditions_sensor_zero_when_no_conditions(hass, aioclient_mock) -> None:
-    """SENS-08: Conditions sensor state is '0/0' when conditionResults is empty."""
-    await _setup_integration(hass, aioclient_mock)
-
-    state = hass.states.get("sensor.gatus_core_my_service_conditions")
-    assert state is not None
-    assert state.state == "0/0"
-
-
-# ---------------------------------------------------------------------------
 # Test 7: stale entity removed when endpoint disappears (DEVICE-04)
 # ---------------------------------------------------------------------------
 async def test_stale_entity_removed(hass, aioclient_mock) -> None:
@@ -281,3 +257,54 @@ async def test_stale_entity_removed(hass, aioclient_mock) -> None:
     # other-service should be removed; my-service should remain
     assert er.async_get("binary_sensor.gatus_core_my_service_status") is not None
     assert er.async_get("binary_sensor.gatus_core_other_service_status") is None
+
+
+# ---------------------------------------------------------------------------
+# Test 8: group binary sensor ON when all endpoints up
+# ---------------------------------------------------------------------------
+async def test_group_binary_sensor_all_up(hass, aioclient_mock) -> None:
+    """Group sensor is ON when all endpoints in group are up."""
+    await _setup_integration(hass, aioclient_mock)  # single endpoint, up
+    state = hass.states.get("binary_sensor.gatus_core_group")
+    assert state is not None
+    assert state.state == "on"
+    assert state.attributes["green_endpoints"] == ["my-service"]
+    assert state.attributes["red_endpoints"] == []
+
+
+# ---------------------------------------------------------------------------
+# Test 9: group binary sensor OFF when any endpoint down
+# ---------------------------------------------------------------------------
+async def test_group_binary_sensor_any_down(hass, aioclient_mock) -> None:
+    """Group sensor is OFF when any endpoint in group is down."""
+    await _setup_integration(hass, aioclient_mock, response=TWO_GROUP_RESPONSE)
+    state = hass.states.get("binary_sensor.gatus_core_group")
+    assert state is not None
+    assert state.state == "off"
+    attrs = state.attributes
+    assert "service-a" in attrs["green_endpoints"]
+    assert "service-b" in attrs["red_endpoints"]
+
+
+# ---------------------------------------------------------------------------
+# Test 10: one group sensor per unique group
+# ---------------------------------------------------------------------------
+async def test_group_binary_sensor_multiple_groups(hass, aioclient_mock) -> None:
+    """One group sensor created per unique group."""
+    await _setup_integration(hass, aioclient_mock, response=TWO_GROUP_RESPONSE)
+    core_state = hass.states.get("binary_sensor.gatus_core_group")
+    edge_state = hass.states.get("binary_sensor.gatus_edge_group")
+    assert core_state is not None
+    assert edge_state is not None
+    assert edge_state.state == "on"
+    assert edge_state.attributes["green_endpoints"] == ["proxy"]
+
+
+# ---------------------------------------------------------------------------
+# Test 11: conditions sensor no longer exists
+# ---------------------------------------------------------------------------
+async def test_no_conditions_sensor(hass, aioclient_mock) -> None:
+    """Conditions sensor entity must not be created."""
+    await _setup_integration(hass, aioclient_mock)
+    state = hass.states.get("sensor.gatus_core_my_service_conditions")
+    assert state is None
